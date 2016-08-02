@@ -1,1 +1,81 @@
-!function n(o,t,e){function r(i,p){if(!t[i]){if(!o[i]){var a="function"==typeof require&&require;if(!p&&a)return a(i,!0);if(u)return u(i,!0);var f=new Error("Cannot find module '"+i+"'");throw f.code="MODULE_NOT_FOUND",f}var c=t[i]={exports:{}};o[i][0].call(c.exports,function(n){var t=o[i][1][n];return r(t?t:n)},c,c.exports,n,o,t,e)}return t[i].exports}for(var u="function"==typeof require&&require,i=0;i<e.length;i++)r(e[i]);return r}({1:[function(n,o,t){function e(n){this.skin=n}e.prototype.pingPong=function(n){for(var o=[],t=1;t<=n;t++)t%15===0?o.push("ping-pong"):t%3===0?o.push("ping"):t%5===0?o.push("pong"):o.push(t);return o},e.prototype.add=function(n,o){var t=n+o;return t},t.calculatorModule=e},{}],2:[function(n,o,t){$(document).ready(function(){$("#addition").submit(function(n){n.preventDefault();var o=$("#num1").val(),t=$("#num2").val(),r=new e("hot pink"),u=r.add(o,t);$("#solution").prepend("<p>"+o+" + "+t+" = "+u+"</p>")})});var e=n("./../js/pingpong.js").calculatorModule;$(document).ready(function(){$("#ping-pong-form").submit(function(n){n.preventDefault();var o=$("#goal").val(),t=new e("hot pink"),r=t.pingPong(o);r.forEach(function(n){$("#solution").append("<li>"+n+"</li>")})})}),$(document).ready(function(){$("#signup").submit(function(n){n.preventDefault();var o=$("#email").val();$("#signup").hide(),$("#solution").prepend("<p>Thank you, "+o+" has been added to our list!</p>")})}),$(document).ready(function(){$("#time").text(moment())})},{"./../js/pingpong.js":1}]},{},[2]);
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+function Calculator(skinName) {
+  this.skin = skinName;
+}
+
+Calculator.prototype.pingPong = function(goal) {
+  var output = [];
+  for (var i = 1; i <= goal; i++) {
+    if (i % 15 === 0) {
+      output.push("ping-pong");
+    } else if (i % 3 === 0) {
+      output.push("ping");
+    } else if (i % 5 === 0) {
+      output.push("pong");
+    } else  {
+      output.push(i);
+    }
+  }
+  return output;
+};
+
+Calculator.prototype.add = function(num1, num2) {
+  var answer = num1 + num2;
+  return answer;
+};
+
+exports.calculatorModule = Calculator;
+
+},{}],2:[function(require,module,exports){
+$(document).ready(function() {
+  $('#addition').submit(function(event) {
+    event.preventDefault();
+    var num1 = $('#num1').val();
+    var num2 = $('#num2').val();
+    var simpleCalculator = new Calculator("hot pink");
+    var answer = simpleCalculator.add(num1, num2);
+    $('#solution').prepend('<p>' + num1 + " + " + num2 + " = " + answer + '</p>');
+  });
+});
+
+var Calculator = require('./../js/pingpong.js').calculatorModule;
+
+$(document).ready(function() {
+  $('#ping-pong-form').submit(function(event) {
+    event.preventDefault();
+    var goal = $('#goal').val();
+    var simpleCalculator = new Calculator("hot pink");
+    var output = simpleCalculator.pingPong(goal);
+    output.forEach(function(element) {
+      $('#solution').append("<li>" + element + "</li>");
+    });
+  });
+});
+
+$(document).ready(function() {
+  $('#signup').submit(function(event) {
+    event.preventDefault();
+    var email = $('#email').val();
+    $('#signup').hide();
+    $('#solution').prepend('<p>Thank you, ' + email + ' has been added to our list!</p>');
+  });
+});
+
+$(document).ready(function(){
+  $('#time').text(moment());
+});
+
+var apiKey = "8bef59c8248608e4c4db2786f2c7b018";
+
+$(document).ready(function() {
+  $('#weatherLocation').click(function() {
+    var city = $('#location').val();
+    $('#location').val("");
+    $('.showWeather').text("The city you have chosen is " + city + ".");
+    $.get('http://api.openweathermap.org/data/2.5/weather?q=' + city + '&appid=' + apiKey, function(response) {
+      console.log(response);
+    });
+  });
+});
+
+},{"./../js/pingpong.js":1}]},{},[2]);
